@@ -6,8 +6,8 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME_BACKEND: ibunceski/grocery-backend
-      IMAGE_NAME_FRONTEND: ibunceski/grocery-frontend
+      IMAGE_NAME_BACKEND: durazzo2/grocery-backend
+      IMAGE_NAME_FRONTEND: durazzo2/grocery-frontend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
