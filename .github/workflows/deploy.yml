@@ -40,3 +40,5 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ env.IMAGE_NAME_FRONTEND }}:latest
+          build-args: |
+            VITE_API_URL=http://grocery-app.local
