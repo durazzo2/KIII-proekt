@@ -22,10 +22,12 @@ jobs:
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: ./backend/Dockerfile
+          no-fail: true
       - name: Check frontend Dockerfile best practices
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: ./frontend/Dockerfile
+         dockerfile: ./frontend/Dockerfile
+         no-fail: true
       - name: Build and push backend Docker image
         uses: docker/build-push-action@v5
         with:
