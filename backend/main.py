@@ -75,7 +75,7 @@ async def seed_data():
     except Exception as e:
         logger.error(f"Seeding failed: {str(e)}")
 
-@app.get("/items")
+@app.get("/api/items")
 async def get_items():
     try:
         items = []
@@ -87,7 +87,7 @@ async def get_items():
         logger.error(f"Get items failed: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-@app.post("/items")
+@app.post("/api/items")
 async def add_item(item: Item):
     try:
         result = items_collection.insert_one(item.dict())
@@ -96,7 +96,7 @@ async def add_item(item: Item):
         logger.error(f"Add item failed: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-@app.put("/items/{item_id}")
+@app.put("/api/items/{item_id}")
 async def update_item(item_id: str, item: Item):
     try:
         result = items_collection.update_one({"_id": ObjectId(item_id)}, {"$set": item.dict()})
@@ -109,7 +109,7 @@ async def update_item(item_id: str, item: Item):
         logger.error(f"Update item failed: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-@app.delete("/items/{item_id}")
+@app.delete("/api/items/{item_id}")
 async def delete_item(item_id: str):
     try:
         result = items_collection.delete_one({"_id": ObjectId(item_id)})
@@ -122,7 +122,7 @@ async def delete_item(item_id: str):
         logger.error(f"Delete item failed: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-@app.put("/items/{item_id}/quantity")
+@app.put("/api/items/{item_id}/quantity")
 async def update_quantity(item_id: str, action: str = Query(..., description="add or remove")):
     if action not in ["add", "remove"]:
         raise HTTPException(status_code=400, detail="Invalid action")
