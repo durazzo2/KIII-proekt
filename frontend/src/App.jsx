@@ -4,9 +4,8 @@ import './App.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-
 function App() {
- const [items, setItems] = useState([]);
+  const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState({ name: '', price: 0, quantity: 0 });
   const [editingItem, setEditingItem] = useState(null);
 
@@ -16,7 +15,7 @@ function App() {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get(`${API_URL}/items`);
+      const res = await axios.get(`${API_URL}/api/items`);
       setItems(res.data);
     } catch (error) {
       console.error('Error fetching items:', error);
@@ -25,7 +24,7 @@ function App() {
 
   const addItem = async () => {
     try {
-      await axios.post(`${API_URL}/items`, newItem);
+      await axios.post(`${API_URL}/api/items`, newItem);
       fetchItems();
       setNewItem({ name: '', price: 0, quantity: 0 });
     } catch (error) {
@@ -35,7 +34,7 @@ function App() {
 
   const updateItem = async (id) => {
     try {
-      await axios.put(`${API_URL}/items/${id}`, editingItem);
+      await axios.put(`${API_URL}/api/items/${id}`, editingItem);
       fetchItems();
       setEditingItem(null);
     } catch (error) {
@@ -45,7 +44,7 @@ function App() {
 
   const deleteItem = async (id) => {
     try {
-      await axios.delete(`${API_URL}/items/${id}`);
+      await axios.delete(`${API_URL}/api/items/${id}`);
       fetchItems();
     } catch (error) {
       console.error('Error deleting item:', error);
@@ -54,13 +53,13 @@ function App() {
 
   const updateQuantity = async (id, action) => {
     try {
-      await axios.put(`${API_URL}/items/${id}/quantity?action=${action}`);
+      await axios.put(`${API_URL}/api/items/${id}/quantity?action=${action}`);
       fetchItems();
     } catch (error) {
       console.error('Error updating quantity:', error);
     }
   };
-  // ... rest of the JSX for rendering the UI ...
+
   return (
     <div className="App">
       <h1>Grocery Store</h1>
@@ -86,6 +85,7 @@ function App() {
         />
         <button onClick={addItem}>Add</button>
       </div>
+
       <h2>Items</h2>
       <ul>
         {items.map((item) => (
