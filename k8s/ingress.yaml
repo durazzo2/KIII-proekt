@@ -5,14 +5,13 @@ metadata:
   namespace: grocery-ns
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
     - host: grocery-app.local
       http:
         paths:
-          - path: /api(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: /api
+            pathType: Prefix
             backend:
               service:
                 name: backend-service
