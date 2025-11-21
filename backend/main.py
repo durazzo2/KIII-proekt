@@ -11,16 +11,14 @@ app = FastAPI()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://grocery-app.local", "http://localhost:3000", "http://localhost:8080"],  # Add localhost:8080  
+    allow_origins=["http://grocery-app.local", "http://localhost:3000", "http://localhost:8080"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Build MongoDB URI from env vars (no shell expansion needed)
 def get_mongo_uri():
     username = os.getenv("MONGO_INITDB_ROOT_USERNAME", "root")
     password = os.getenv("MONGO_INITDB_ROOT_PASSWORD", "example")
@@ -28,14 +26,13 @@ def get_mongo_uri():
     db = os.getenv("MONGO_DB", "grocery_db")
     return f"mongodb://{username}:{password}@{host}:27017/{db}?authSource=admin"
 
-# MongoDB connection with retry
 def connect_to_mongo(max_retries=5, retry_delay=5):
     uri = get_mongo_uri()
     logger.info(f"Attempting to connect to MongoDB at {uri}")
     for attempt in range(max_retries):
         try:
             client = MongoClient(uri, serverSelectionTimeoutMS=5000)
-            client.server_info()  # Test connection
+            client.server_info()  
             logger.info("Successfully connected to MongoDB")
             return client
         except Exception as e:
@@ -46,7 +43,6 @@ def connect_to_mongo(max_retries=5, retry_delay=5):
                 raise e
     raise Exception("Failed to connect to MongoDB after retries")
 
-# Global connection
 try:
     client = connect_to_mongo()
     db = client.grocery_db
@@ -60,7 +56,6 @@ class Item(BaseModel):
     price: float
     quantity: int = 0
 
-# Seed initial data if collection is empty
 @app.on_event("startup")
 async def seed_data():
     try:
